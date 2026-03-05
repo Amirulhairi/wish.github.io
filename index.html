@@ -252,6 +252,142 @@
     </div>
 
     <script>
+        // Sound control
+        let soundEnabled = true;
+        const soundControl = document.getElementById('soundControl');
+        
+        // Create Audio Context for sound effects
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioContext = new AudioContext();
+        
+        // Toggle sound
+        soundControl.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            soundControl.textContent = soundEnabled ? '🔊' : '🔇';
+            if (soundEnabled && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        });
+        
+        // Play firework explosion sound
+        function playFireworkSound() {
+            if (!soundEnabled) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destinationNode);
+            
+            // Create explosion sound effect
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.3);
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+        
+        // Play celebration sound
+        function playCelebrationSound() {
+            if (!soundEnabled) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destinationNode);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+            oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+            oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+            
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.4);
+        }
+        
+        // Create firework explosion
+        function createFirework(x, y) {
+            const container = document.getElementById('fireworkContainer');
+            const colors = ['#FFD700', '#FFA500', '#FF6347', '#00FF00', '#00CED1', '#FF69B4', '#FFFF00', '#FF1493'];
+            const particleCount = 50;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            playFireworkSound();
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework';
+                particle.style.backgroundColor = color;
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                
+                const angle = (Math.PI * 2 * i) / particleCount;
+                const velocity = Math.random() * 100 + 100;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+                
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                particle.style.animation = `burst ${Math.random() * 0.5 + 1}s ease-out forwards`;
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 1500);
+            }
+        }
+        
+        // Create rocket trail
+        function createRocket(startX, startY, endX, endY) {
+            const container = document.getElementById('fireworkContainer');
+            const rocket = document.createElement('div');
+            rocket.style.position = 'absolute';
+            rocket.style.width = '3px';
+            rocket.style.height = '3px';
+            rocket.style.backgroundColor = '#FFD700';
+            rocket.style.borderRadius = '50%';
+            rocket.style.boxShadow = '0 0 10px #FFD700';
+            rocket.style.left = startX + 'px';
+            rocket.style.top = startY + 'px';
+            rocket.style.transition = 'all 0.8s ease-out';
+            
+            container.appendChild(rocket);
+            
+            setTimeout(() => {
+                rocket.style.left = endX + 'px';
+                rocket.style.top = endY + 'px';
+            }, 50);
+            
+            setTimeout(() => {
+                rocket.remove();
+                createFirework(endX, endY);
+            }, 850);
+        }
+        
+        // Launch random firework
+        function launchRandomFirework() {
+            const startX = Math.random() * window.innerWidth;
+            const startY = window.innerHeight;
+            const endX = Math.random() * window.innerWidth;
+            const endY = Math.random() * (window.innerHeight * 0.5);
+            
+            createRocket(startX, startY, endX, endY);
+        }
+        
+        // Continuous firework show
+        function startFireworkShow() {
+            launchRandomFirework();
+            
+            const delay = Math.random() * 1000 + 500;
+            setTimeout(startFireworkShow, delay);
+        }
+        
         // Create animated sparkles
         function createSparkle() {
             const sparkle = document.createElement('div');
@@ -273,6 +409,26 @@
         for (let i = 0; i < 20; i++) {
             createSparkle();
         }
+        
+        // Start firework show after a short delay
+        setTimeout(() => {
+            playCelebrationSound();
+            startFireworkShow();
+        }, 1000);
+        
+        // Add click/touch interaction for manual fireworks
+        document.addEventListener('click', (e) => {
+            if (e.target.id !== 'soundControl') {
+                createFirework(e.clientX, e.clientY);
+            }
+        });
+        
+        // Resume audio context on first user interaction (required by browsers)
+        document.addEventListener('click', () => {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }, { once: true });
     </script>
 </body>
 </html>
