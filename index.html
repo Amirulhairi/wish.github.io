@@ -5,15 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selamat Hari Raya Aidilfitri</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Georgia', 'Times New Roman', serif;
-            background: linear-gradient(135deg, #0f6e3c 0%, #1a9850 50%, #0f6e3c 100%);
+            background: #000000;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -22,12 +18,12 @@
             position: relative;
         }
 
-        /* Animated background stars/sparkles */
         .sparkle {
             position: absolute;
-            background: rgba(255, 215, 0, 0.8);
+            background: rgba(255, 215, 0, 1);
             border-radius: 50%;
             animation: sparkle 3s infinite;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
         }
 
         @keyframes sparkle {
@@ -38,14 +34,15 @@
         .container {
             text-align: center;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3), 0 0 100px rgba(255, 215, 0, 0.2);
             max-width: 800px;
             width: 90%;
             position: relative;
-            z-index: 1;
+            z-index: 10000;
             animation: fadeIn 1s ease-in;
+            border: 2px solid rgba(212, 175, 55, 0.3);
         }
 
         @keyframes fadeIn {
@@ -53,198 +50,94 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .mosque-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
-        }
+        .mosque-icon { font-size: 80px; margin-bottom: 20px; animation: bounce 2s infinite; }
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
 
-        h1 {
-            color: #0f6e3c;
-            font-size: 3em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            font-weight: bold;
-        }
+        h1 { color: #0f6e3c; font-size: 3em; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); font-weight: bold; }
+        .arabic { font-size: 2em; color: #d4af37; margin: 20px 0; font-weight: bold; }
+        .greeting { font-size: 1.5em; color: #333; margin: 30px 0; line-height: 1.6; }
+        .message { color: #555; font-size: 1.1em; line-height: 1.8; margin: 20px 0; font-style: italic; }
+        .decoration { color: #d4af37; font-size: 2em; margin: 20px 0; }
 
-        .arabic {
-            font-size: 2em;
-            color: #d4af37;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-
-        .greeting {
-            font-size: 1.5em;
-            color: #333;
-            margin: 30px 0;
-            line-height: 1.6;
-        }
-
-        .message {
-            color: #555;
-            font-size: 1.1em;
-            line-height: 1.8;
-            margin: 20px 0;
-            font-style: italic;
-        }
-
-        .decoration {
-            color: #d4af37;
-            font-size: 2em;
-            margin: 20px 0;
-        }
-
-        .ketupat {
-            display: inline-block;
-            margin: 0 10px;
-            animation: swing 2s infinite;
-        }
-
+        .ketupat { display: inline-block; margin: 0 10px; animation: swing 2s infinite; }
         @keyframes swing {
             0%, 100% { transform: rotate(-5deg); }
             50% { transform: rotate(5deg); }
         }
 
-        .footer {
-            margin-top: 30px;
-            color: #666;
-            font-size: 0.9em;
-        }
+        .footer { margin-top: 30px; color: #666; font-size: 0.9em; }
+        .stars { color: #d4af37; font-size: 1.5em; letter-spacing: 10px; }
 
-        .stars {
-            color: #d4af37;
-            font-size: 1.5em;
-            letter-spacing: 10px;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-            
-            .arabic {
-                font-size: 1.5em;
-            }
-            
-            .greeting {
-                font-size: 1.2em;
-            }
-            
-            .mosque-icon {
-                font-size: 60px;
-            }
-        }
-
-        /* Floating animation for decorative elements */
-        .float {
-            animation: float 3s ease-in-out infinite;
-        }
-
+        .float { animation: float 3s ease-in-out infinite; }
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
         }
 
-        /* Firework styles */
-        .firework {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .firework-container {
+        /* Canvas for fireworks */
+        #fireworkCanvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 1;
         }
 
-        /* Sound control button */
         .sound-control {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 20px; right: 20px;
             background: rgba(255, 255, 255, 0.9);
             border: none;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             font-size: 30px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: all 0.3s;
-            z-index: 10000;
+            z-index: 20000;
         }
 
-        .sound-control:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-        }
+        .sound-control:hover { transform: scale(1.1); }
+        .sound-control:active { transform: scale(0.95); }
 
-        .sound-control:active {
-            transform: scale(0.95);
-        }
-
-        /* Particle burst effect */
-        @keyframes burst {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(var(--tx), var(--ty)) scale(0);
-            }
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .arabic { font-size: 1.5em; }
+            .greeting { font-size: 1.2em; }
+            .mosque-icon { font-size: 60px; }
         }
     </style>
 </head>
 <body>
-    <!-- Firework Container -->
-    <div class="firework-container" id="fireworkContainer"></div>
-    
-    <!-- Sound Control Button -->
+
+    <!-- Canvas-based fireworks -->
+    <canvas id="fireworkCanvas"></canvas>
+
     <button class="sound-control" id="soundControl" title="Toggle Sound">🔊</button>
+
     <div class="container">
         <div class="mosque-icon">🕌</div>
-        
         <div class="stars">✨ ✨ ✨</div>
-        
         <h1>Selamat Hari Raya</h1>
         <h1>Aidilfitri</h1>
-        
         <div class="arabic">عيد مبارك</div>
-        
         <div class="decoration">
             <span class="ketupat">🎋</span>
             <span class="float">🌙</span>
             <span class="ketupat">🎋</span>
         </div>
-        
-        <div class="greeting">
-            Maaf Zahir dan Batin
-        </div>
-        
+        <div class="greeting">Maaf Zahir dan Batin</div>
         <div class="message">
             Semoga di hari yang mulia ini,<br>
             kita semua diberkati dengan kebahagiaan,<br>
             kesihatan yang baik, dan limpah rezeki.<br>
             Mohon maaf atas segala kesalahan dan kekhilafan.
         </div>
-        
         <div class="decoration">✧ ✦ ✧</div>
-        
         <div class="footer">
             <strong>Taqabbalallahu minna wa minkum</strong><br>
             May Allah accept from us and from you
@@ -252,143 +145,355 @@
     </div>
 
     <script>
-        // Sound control
+        // ─── Canvas Setup ───────────────────────────────────────────────
+        const canvas = document.getElementById('fireworkCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // ─── Sound ──────────────────────────────────────────────────────
         let soundEnabled = true;
         const soundControl = document.getElementById('soundControl');
-        
-        // Create Audio Context for sound effects
         const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audioContext = new AudioContext();
-        
-        // Toggle sound
+        const audioCtx = new AudioContext();
+
         soundControl.addEventListener('click', () => {
             soundEnabled = !soundEnabled;
             soundControl.textContent = soundEnabled ? '🔊' : '🔇';
-            if (soundEnabled && audioContext.state === 'suspended') {
-                audioContext.resume();
+            if (soundEnabled && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+                playRayaSong();
+            } else if (!soundEnabled) {
+                stopRayaSong();
             }
         });
+
+        // ─── Raya Song Melody ───────────────────────────────────────────
+        let rayaSongInterval = null;
         
-        // Play firework explosion sound
-        function playFireworkSound() {
-            if (!soundEnabled) return;
+        function playRayaSong() {
+            if (!soundEnabled || rayaSongInterval) return;
             
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
+            // Traditional Raya melody inspired by "Suasana Hari Raya"
+            // Notes: C5, D5, E5, F5, G5, A5
+            const melody = [
+                { note: 523.25, duration: 0.4 }, // C5
+                { note: 587.33, duration: 0.4 }, // D5
+                { note: 659.25, duration: 0.4 }, // E5
+                { note: 698.46, duration: 0.6 }, // F5
+                { note: 659.25, duration: 0.4 }, // E5
+                { note: 587.33, duration: 0.4 }, // D5
+                { note: 523.25, duration: 0.8 }, // C5
+                { note: 0, duration: 0.2 },       // rest
+                { note: 659.25, duration: 0.4 }, // E5
+                { note: 698.46, duration: 0.4 }, // F5
+                { note: 783.99, duration: 0.6 }, // G5
+                { note: 880.00, duration: 0.4 }, // A5
+                { note: 783.99, duration: 0.4 }, // G5
+                { note: 698.46, duration: 0.8 }, // F5
+                { note: 0, duration: 0.2 },       // rest
+                { note: 783.99, duration: 0.4 }, // G5
+                { note: 659.25, duration: 0.4 }, // E5
+                { note: 698.46, duration: 0.4 }, // F5
+                { note: 659.25, duration: 0.6 }, // E5
+                { note: 587.33, duration: 0.4 }, // D5
+                { note: 523.25, duration: 1.0 }, // C5
+            ];
+
+            let currentNote = 0;
             
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destinationNode);
+            function playNote() {
+                if (!soundEnabled) {
+                    stopRayaSong();
+                    return;
+                }
+                
+                const { note, duration } = melody[currentNote];
+                
+                if (note > 0) {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    
+                    osc.type = 'sine';
+                    osc.frequency.value = note;
+                    
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                    
+                    osc.start(audioCtx.currentTime);
+                    osc.stop(audioCtx.currentTime + duration);
+                }
+                
+                currentNote = (currentNote + 1) % melody.length;
+                rayaSongInterval = setTimeout(playNote, duration * 1000);
+            }
             
-            // Create explosion sound effect
-            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.3);
-            
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
+            playNote();
         }
         
-        // Play celebration sound
-        function playCelebrationSound() {
-            if (!soundEnabled) return;
-            
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destinationNode);
-            
-            oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-            oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-            oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
-            
-            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.4);
-        }
-        
-        // Create firework explosion
-        function createFirework(x, y) {
-            const container = document.getElementById('fireworkContainer');
-            const colors = ['#FFD700', '#FFA500', '#FF6347', '#00FF00', '#00CED1', '#FF69B4', '#FFFF00', '#FF1493'];
-            const particleCount = 50;
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            
-            playFireworkSound();
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'firework';
-                particle.style.backgroundColor = color;
-                particle.style.left = x + 'px';
-                particle.style.top = y + 'px';
-                
-                const angle = (Math.PI * 2 * i) / particleCount;
-                const velocity = Math.random() * 100 + 100;
-                const tx = Math.cos(angle) * velocity;
-                const ty = Math.sin(angle) * velocity;
-                
-                particle.style.setProperty('--tx', tx + 'px');
-                particle.style.setProperty('--ty', ty + 'px');
-                particle.style.animation = `burst ${Math.random() * 0.5 + 1}s ease-out forwards`;
-                
-                container.appendChild(particle);
-                
-                setTimeout(() => particle.remove(), 1500);
+        function stopRayaSong() {
+            if (rayaSongInterval) {
+                clearTimeout(rayaSongInterval);
+                rayaSongInterval = null;
             }
         }
-        
-        // Create rocket trail
-        function createRocket(startX, startY, endX, endY) {
-            const container = document.getElementById('fireworkContainer');
-            const rocket = document.createElement('div');
-            rocket.style.position = 'absolute';
-            rocket.style.width = '3px';
-            rocket.style.height = '3px';
-            rocket.style.backgroundColor = '#FFD700';
-            rocket.style.borderRadius = '50%';
-            rocket.style.boxShadow = '0 0 10px #FFD700';
-            rocket.style.left = startX + 'px';
-            rocket.style.top = startY + 'px';
-            rocket.style.transition = 'all 0.8s ease-out';
+
+        document.addEventListener('click', () => {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            if (soundEnabled && !rayaSongInterval) {
+                playRayaSong();
+            }
+        }, { once: true });
+
+        function playBoom() {
+            if (!soundEnabled) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.4);
+            gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+        }
+
+        function playLaunch() {
+            if (!soundEnabled) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.6);
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+        }
+
+        // ─── Particle Class ─────────────────────────────────────────────
+        class Particle {
+            constructor(x, y, color, vx, vy, size = 3) {
+                this.x = x; this.y = y;
+                this.color = color;
+                this.vx = vx; this.vy = vy;
+                this.alpha = 1;
+                this.size = size;
+                this.gravity = 0.06;
+                this.decay = Math.random() * 0.012 + 0.012;
+                this.trail = [];
+            }
+            update() {
+                this.trail.push({ x: this.x, y: this.y, alpha: this.alpha });
+                if (this.trail.length > 6) this.trail.shift();
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+                this.vx *= 0.98;
+            }
+            draw(ctx) {
+                // Draw trail
+                for (let i = 0; i < this.trail.length; i++) {
+                    const t = this.trail[i];
+                    const ratio = i / this.trail.length;
+                    ctx.beginPath();
+                    ctx.arc(t.x, t.y, this.size * ratio * 0.6, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color.replace('1)', `${t.alpha * ratio * 0.4})`);
+                    ctx.fill();
+                }
+                // Draw particle
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color.replace('1)', `${this.alpha})`);
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = this.color.replace('1)', '0.8)');
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+            isDead() { return this.alpha <= 0; }
+        }
+
+        // ─── Rocket Class ────────────────────────────────────────────────
+        class Rocket {
+            constructor(x) {
+                this.x = x;
+                this.y = canvas.height + 10;
+                // Target: random upper portion of screen
+                this.targetY = Math.random() * canvas.height * 0.45 + 50;
+                // Speed to reach target in ~60 frames
+                this.vy = -(canvas.height - this.targetY) / 60;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.trail = [];
+                this.exploded = false;
+                this.colors = this.randomPalette();
+                playLaunch();
+            }
+
+            randomPalette() {
+                const palettes = [
+                    ['rgba(255,215,0,1)', 'rgba(255,165,0,1)', 'rgba(255,255,100,1)'],
+                    ['rgba(255,80,80,1)', 'rgba(255,180,0,1)', 'rgba(255,255,255,1)'],
+                    ['rgba(0,220,255,1)', 'rgba(0,150,255,1)', 'rgba(180,255,255,1)'],
+                    ['rgba(180,0,255,1)', 'rgba(255,0,180,1)', 'rgba(255,180,255,1)'],
+                    ['rgba(0,255,120,1)', 'rgba(0,255,255,1)', 'rgba(200,255,200,1)'],
+                    ['rgba(255,100,0,1)', 'rgba(255,200,0,1)', 'rgba(255,255,180,1)'],
+                ];
+                return palettes[Math.floor(Math.random() * palettes.length)];
+            }
+
+            update(particles) {
+                this.trail.push({ x: this.x, y: this.y });
+                if (this.trail.length > 12) this.trail.shift();
+
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.03; // slight deceleration (gravity)
+
+                // Explode when reached target or slowing down near top
+                if (this.y <= this.targetY || this.vy >= 0) {
+                    this.explode(particles);
+                    this.exploded = true;
+                }
+            }
+
+            explode(particles) {
+                playBoom();
+                const count = Math.floor(Math.random() * 60) + 80; // 80–140 particles
+
+                // Main burst
+                for (let i = 0; i < count; i++) {
+                    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.1;
+                    const speed = Math.random() * 5 + 2;
+                    const color = this.colors[Math.floor(Math.random() * this.colors.length)];
+                    particles.push(new Particle(
+                        this.x, this.y, color,
+                        Math.cos(angle) * speed,
+                        Math.sin(angle) * speed,
+                        Math.random() * 2 + 1.5
+                    ));
+                }
+
+                // Inner sparkle ring (smaller, faster fade)
+                for (let i = 0; i < 30; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 2 + 0.5;
+                    particles.push(new Particle(
+                        this.x, this.y, 'rgba(255,255,255,1)',
+                        Math.cos(angle) * speed,
+                        Math.sin(angle) * speed,
+                        1
+                    ));
+                }
+
+                // Flash effect
+                ctx.beginPath();
+                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 80);
+                gradient.addColorStop(0, this.colors[0].replace('1)', '0.8)'));
+                gradient.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = gradient;
+                ctx.arc(this.x, this.y, 80, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            draw(ctx) {
+                // Draw rocket trail
+                for (let i = 0; i < this.trail.length; i++) {
+                    const t = this.trail[i];
+                    const ratio = i / this.trail.length;
+                    ctx.beginPath();
+                    ctx.arc(t.x, t.y, 3 * ratio, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 220, 100, ${ratio * 0.7})`;
+                    ctx.shadowBlur = 6;
+                    ctx.shadowColor = 'rgba(255,180,0,0.8)';
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+                // Rocket head
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,255,200,1)';
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = 'rgba(255,220,0,1)';
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            isDead() { return this.exploded; }
+        }
+
+        // ─── Animation Loop ──────────────────────────────────────────────
+        const rockets = [];
+        const particles = [];
+
+        function animate() {
+            // Fade trail (semi-transparent clear)
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Update & draw rockets
+            for (let i = rockets.length - 1; i >= 0; i--) {
+                rockets[i].update(particles);
+                rockets[i].draw(ctx);
+                if (rockets[i].isDead()) rockets.splice(i, 1);
+            }
+
+            // Update & draw particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw(ctx);
+                if (particles[i].isDead()) particles.splice(i, 1);
+            }
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // ─── Auto Launch Rockets ─────────────────────────────────────────
+        function launchRocket() {
+            const x = Math.random() * canvas.width * 0.8 + canvas.width * 0.1;
+            rockets.push(new Rocket(x));
+            // Schedule next launch
+            const delay = Math.random() * 900 + 400;
+            setTimeout(launchRocket, delay);
+        }
+
+        // Start after 1 second
+        setTimeout(() => {
+            // Launch 3 simultaneously at start
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const x = (canvas.width / 4) * (i + 1);
+                    rockets.push(new Rocket(x));
+                }, i * 300);
+            }
+            setTimeout(launchRocket, 1200);
             
-            container.appendChild(rocket);
-            
+            // Try to start Raya song (will work after first user interaction)
             setTimeout(() => {
-                rocket.style.left = endX + 'px';
-                rocket.style.top = endY + 'px';
-            }, 50);
-            
-            setTimeout(() => {
-                rocket.remove();
-                createFirework(endX, endY);
-            }, 850);
-        }
-        
-        // Launch random firework
-        function launchRandomFirework() {
-            const startX = Math.random() * window.innerWidth;
-            const startY = window.innerHeight;
-            const endX = Math.random() * window.innerWidth;
-            const endY = Math.random() * (window.innerHeight * 0.5);
-            
-            createRocket(startX, startY, endX, endY);
-        }
-        
-        // Continuous firework show
-        function startFireworkShow() {
-            launchRandomFirework();
-            
-            const delay = Math.random() * 1000 + 500;
-            setTimeout(startFireworkShow, delay);
-        }
-        
-        // Create animated sparkles
+                if (audioCtx.state === 'running' && soundEnabled && !rayaSongInterval) {
+                    playRayaSong();
+                }
+            }, 500);
+        }, 1000);
+
+        // ─── Click to Launch ─────────────────────────────────────────────
+        document.addEventListener('click', (e) => {
+            if (e.target.id !== 'soundControl') {
+                rockets.push(new Rocket(e.clientX));
+            }
+        });
+
+        // ─── Sparkles ────────────────────────────────────────────────────
         function createSparkle() {
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
@@ -398,37 +503,10 @@
             sparkle.style.top = Math.random() * 100 + '%';
             sparkle.style.animationDelay = Math.random() * 3 + 's';
             document.body.appendChild(sparkle);
-            
             setTimeout(() => sparkle.remove(), 3000);
         }
-
-        // Generate sparkles periodically
         setInterval(createSparkle, 300);
-        
-        // Create initial sparkles
-        for (let i = 0; i < 20; i++) {
-            createSparkle();
-        }
-        
-        // Start firework show after a short delay
-        setTimeout(() => {
-            playCelebrationSound();
-            startFireworkShow();
-        }, 1000);
-        
-        // Add click/touch interaction for manual fireworks
-        document.addEventListener('click', (e) => {
-            if (e.target.id !== 'soundControl') {
-                createFirework(e.clientX, e.clientY);
-            }
-        });
-        
-        // Resume audio context on first user interaction (required by browsers)
-        document.addEventListener('click', () => {
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-        }, { once: true });
+        for (let i = 0; i < 20; i++) createSparkle();
     </script>
 </body>
 </html>
