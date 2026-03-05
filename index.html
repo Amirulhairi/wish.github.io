@@ -118,6 +118,317 @@
     <canvas id="fireworkCanvas"></canvas>
 
     <button class="sound-control" id="soundControl" title="Toggle Sound">🔊</button>
+    
+    <!-- Audio Player -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="music/sound1.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Initial Play Overlay -->
+    <div id="playOverlay">
+        <canvas id="overlayCanvas"></canvas>
+        
+        <!-- Light rays effect -->
+        <div class="light-rays">
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+        </div>
+        
+        <div id="overlayContent">
+            <div class="play-icon">▶</div>
+            <h1 class="overlay-title">Selamat Hari Raya</h1>
+            <h2 class="overlay-subtitle">Aidilfitri</h2>
+            <div class="arabic-text">عيد مبارك</div>
+            <p class="overlay-instruction">Klik untuk memulakan muzik</p>
+            <p class="overlay-instruction-en">Click to start music</p>
+            <div class="decorative-line"></div>
+            
+            <!-- Floating decorations -->
+            <div class="float-decoration" style="position:absolute; font-size:40px; top:15%; left:10%; animation:floatSlow 4s ease-in-out infinite;">🕌</div>
+            <div class="float-decoration" style="position:absolute; font-size:35px; top:25%; right:15%; animation:floatSlow 5s ease-in-out infinite 1s;">🌙</div>
+            <div class="float-decoration" style="position:absolute; font-size:30px; bottom:20%; left:15%; animation:floatSlow 4.5s ease-in-out infinite 0.5s;">⭐</div>
+            <div class="float-decoration" style="position:absolute; font-size:35px; bottom:15%; right:10%; animation:floatSlow 5.5s ease-in-out infinite 1.5s;">✨</div>
+            <div class="float-decoration" style="position:absolute; font-size:30px; top:45%; left:5%; animation:floatSlow 4s ease-in-out infinite 2s;">🎋</div>
+            <div class="float-decoration" style="position:absolute; font-size:30px; top:40%; right:8%; animation:floatSlow 4.8s ease-in-out infinite 0.8s;">🎋</div>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes floatSlow {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translateY(-20px) rotate(5deg);
+                opacity: 1;
+            }
+        }
+        
+        /* Light rays effect */
+        .light-rays {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        .ray {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 50%;
+            background: linear-gradient(to bottom, 
+                rgba(212, 175, 55, 0.4), 
+                rgba(212, 175, 55, 0.1),
+                transparent);
+            transform-origin: top center;
+            animation: rotateRays 20s linear infinite;
+        }
+        
+        .ray:nth-child(1) { transform: rotate(0deg); animation-delay: 0s; }
+        .ray:nth-child(2) { transform: rotate(72deg); animation-delay: -4s; }
+        .ray:nth-child(3) { transform: rotate(144deg); animation-delay: -8s; }
+        .ray:nth-child(4) { transform: rotate(216deg); animation-delay: -12s; }
+        .ray:nth-child(5) { transform: rotate(288deg); animation-delay: -16s; }
+        
+        @keyframes rotateRays {
+            from { transform: rotate(var(--start-rotation, 0deg)); }
+            to { transform: rotate(calc(var(--start-rotation, 0deg) + 360deg)); }
+        }
+        
+        .ray:nth-child(1) { --start-rotation: 0deg; }
+        .ray:nth-child(2) { --start-rotation: 72deg; }
+        .ray:nth-child(3) { --start-rotation: 144deg; }
+        .ray:nth-child(4) { --start-rotation: 216deg; }
+        .ray:nth-child(5) { --start-rotation: 288deg; }
+        #playOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a4d2e 0%, #0f6e3c 25%, #1a9850 50%, #0f6e3c 75%, #0a4d2e 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
+            z-index: 50000;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        #overlayCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        #overlayContent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-family: Georgia, serif;
+            z-index: 2;
+            animation: contentEntrance 1.5s ease-out;
+        }
+        
+        @keyframes contentEntrance {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+        
+        .play-icon {
+            font-size: 100px;
+            margin-bottom: 30px;
+            animation: playPulse 2s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.8),
+                         0 0 60px rgba(212, 175, 55, 0.6);
+            display: inline-block;
+            position: relative;
+        }
+        
+        .play-icon::before,
+        .play-icon::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid rgba(212, 175, 55, 0.6);
+            border-radius: 50%;
+            width: 120%;
+            height: 120%;
+            animation: ripple 2s ease-out infinite;
+        }
+        
+        .play-icon::after {
+            animation-delay: 1s;
+        }
+        
+        @keyframes ripple {
+            0% {
+                width: 120%;
+                height: 120%;
+                opacity: 1;
+            }
+            100% {
+                width: 200%;
+                height: 200%;
+                opacity: 0;
+            }
+        }
+        
+        @keyframes playPulse {
+            0%, 100% { 
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            50% { 
+                transform: scale(1.15);
+                filter: brightness(1.3);
+            }
+        }
+        
+        .overlay-title {
+            font-size: 4em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #d4af37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.8),
+                         2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: titleFloat 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .overlay-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .overlay-subtitle {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 10px 0 30px 0;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6),
+                         2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: titleFloat 3s ease-in-out infinite 0.3s;
+        }
+        
+        .arabic-text {
+            font-size: 2.5em;
+            margin: 30px 0;
+            color: #d4af37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(212, 175, 55, 0.8); }
+            50% { text-shadow: 0 0 40px rgba(212, 175, 55, 1), 0 0 60px rgba(212, 175, 55, 0.6); }
+        }
+        
+        .overlay-instruction {
+            font-size: 1.8em;
+            margin: 20px 0 10px 0;
+            opacity: 0.9;
+            animation: blink 2s ease-in-out infinite;
+        }
+        
+        .overlay-instruction-en {
+            font-size: 1.4em;
+            margin: 5px 0 20px 0;
+            opacity: 0.7;
+            animation: blink 2s ease-in-out infinite 0.5s;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        .decorative-line {
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 30px auto;
+            animation: lineExpand 2s ease-in-out infinite;
+        }
+        
+        @keyframes lineExpand {
+            0%, 100% { width: 200px; opacity: 0.5; }
+            50% { width: 300px; opacity: 1; }
+        }
+        
+        #playOverlay:hover .play-icon {
+            animation: playPulse 0.8s ease-in-out infinite;
+            transform: scale(1.1);
+        }
+        
+        /* Fade out animation */
+        #playOverlay.fade-out {
+            animation: fadeOut 1s forwards;
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .overlay-title { font-size: 2.5em; }
+            .overlay-subtitle { font-size: 2em; }
+            .arabic-text { font-size: 1.8em; }
+            .play-icon { font-size: 70px; }
+            .overlay-instruction { font-size: 1.3em; }
+            .overlay-instruction-en { font-size: 1em; }
+        }
+    </style>
 
     <div class="container">
         <div class="mosque-icon">🕌</div>
@@ -145,6 +456,156 @@
     </div>
 
     <script>
+        // ─── Audio Setup ────────────────────────────────────────────────
+        const bgMusic = document.getElementById('bgMusic');
+        bgMusic.volume = 0.3; // 30% volume
+        
+        let soundEnabled = true;
+        const soundControl = document.getElementById('soundControl');
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+        
+        // ─── Overlay Animation ──────────────────────────────────────────
+        const overlayCanvas = document.getElementById('overlayCanvas');
+        const overlayCtx = overlayCanvas.getContext('2d');
+        
+        overlayCanvas.width = window.innerWidth;
+        overlayCanvas.height = window.innerHeight;
+        
+        // Floating particles for overlay
+        class OverlayParticle {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.x = Math.random() * overlayCanvas.width;
+                this.y = Math.random() * overlayCanvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.3;
+                this.color = Math.random() > 0.5 ? '#d4af37' : '#ffffff';
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x < 0 || this.x > overlayCanvas.width || 
+                    this.y < 0 || this.y > overlayCanvas.height) {
+                    this.reset();
+                }
+            }
+            
+            draw() {
+                overlayCtx.beginPath();
+                overlayCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                overlayCtx.fillStyle = this.color;
+                overlayCtx.globalAlpha = this.opacity;
+                overlayCtx.shadowBlur = 10;
+                overlayCtx.shadowColor = this.color;
+                overlayCtx.fill();
+                overlayCtx.globalAlpha = 1;
+                overlayCtx.shadowBlur = 0;
+            }
+        }
+        
+        // Create particles
+        const overlayParticles = [];
+        for (let i = 0; i < 80; i++) {
+            overlayParticles.push(new OverlayParticle());
+        }
+        
+        // Animate overlay particles
+        function animateOverlay() {
+            if (!document.getElementById('playOverlay')) return;
+            
+            overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+            
+            // Draw connecting lines between nearby particles
+            for (let i = 0; i < overlayParticles.length; i++) {
+                for (let j = i + 1; j < overlayParticles.length; j++) {
+                    const dx = overlayParticles[i].x - overlayParticles[j].x;
+                    const dy = overlayParticles[i].y - overlayParticles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        overlayCtx.beginPath();
+                        overlayCtx.strokeStyle = '#d4af37';
+                        overlayCtx.globalAlpha = (100 - distance) / 100 * 0.2;
+                        overlayCtx.lineWidth = 1;
+                        overlayCtx.moveTo(overlayParticles[i].x, overlayParticles[i].y);
+                        overlayCtx.lineTo(overlayParticles[j].x, overlayParticles[j].y);
+                        overlayCtx.stroke();
+                        overlayCtx.globalAlpha = 1;
+                    }
+                }
+            }
+            
+            // Update and draw particles
+            overlayParticles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            requestAnimationFrame(animateOverlay);
+        }
+        
+        animateOverlay();
+        
+        // ─── Play Overlay Handler ──────────────────────────────────────
+        const playOverlay = document.getElementById('playOverlay');
+        playOverlay.addEventListener('click', () => {
+            // Resume audio context for sound effects
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            // Start background music
+            bgMusic.play().then(() => {
+                playOverlay.classList.add('fade-out');
+                setTimeout(() => {
+                    playOverlay.style.display = 'none';
+                }, 1000);
+                console.log('Music started!');
+            }).catch(e => {
+                console.log('Play error:', e);
+                playOverlay.classList.add('fade-out');
+                setTimeout(() => {
+                    playOverlay.style.display = 'none';
+                }, 1000);
+            });
+        });
+        
+        // Resize overlay canvas
+        window.addEventListener('resize', () => {
+            overlayCanvas.width = window.innerWidth;
+            overlayCanvas.height = window.innerHeight;
+        });
+        
+        // Mouse interaction on overlay
+        let mouseX = 0;
+        let mouseY = 0;
+        playOverlay.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Create sparkle on mouse move
+            if (Math.random() > 0.8) {
+                const sparkle = new OverlayParticle();
+                sparkle.x = mouseX + (Math.random() - 0.5) * 30;
+                sparkle.y = mouseY + (Math.random() - 0.5) * 30;
+                sparkle.size = Math.random() * 4 + 2;
+                sparkle.color = '#d4af37';
+                sparkle.opacity = 0.8;
+                overlayParticles.push(sparkle);
+                setTimeout(() => {
+                    const index = overlayParticles.indexOf(sparkle);
+                    if (index > -1) overlayParticles.splice(index, 1);
+                }, 1000);
+            }
+        });
+        
         // ─── Canvas Setup ───────────────────────────────────────────────
         const canvas = document.getElementById('fireworkCanvas');
         const ctx = canvas.getContext('2d');
@@ -156,104 +617,18 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        // ─── Sound ──────────────────────────────────────────────────────
-        let soundEnabled = true;
-        const soundControl = document.getElementById('soundControl');
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audioCtx = new AudioContext();
-
+        // ─── Sound Control Button ───────────────────────────────────────
         soundControl.addEventListener('click', () => {
             soundEnabled = !soundEnabled;
             soundControl.textContent = soundEnabled ? '🔊' : '🔇';
-            if (soundEnabled && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-                playRayaSong();
-            } else if (!soundEnabled) {
-                stopRayaSong();
+            
+            if (soundEnabled) {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                bgMusic.play().catch(e => console.log('Music play blocked:', e));
+            } else {
+                bgMusic.pause();
             }
         });
-
-        // ─── Raya Song Melody ───────────────────────────────────────────
-        let rayaSongInterval = null;
-        
-        function playRayaSong() {
-            if (!soundEnabled || rayaSongInterval) return;
-            
-            // Traditional Raya melody inspired by "Suasana Hari Raya"
-            // Notes: C5, D5, E5, F5, G5, A5
-            const melody = [
-                { note: 523.25, duration: 0.4 }, // C5
-                { note: 587.33, duration: 0.4 }, // D5
-                { note: 659.25, duration: 0.4 }, // E5
-                { note: 698.46, duration: 0.6 }, // F5
-                { note: 659.25, duration: 0.4 }, // E5
-                { note: 587.33, duration: 0.4 }, // D5
-                { note: 523.25, duration: 0.8 }, // C5
-                { note: 0, duration: 0.2 },       // rest
-                { note: 659.25, duration: 0.4 }, // E5
-                { note: 698.46, duration: 0.4 }, // F5
-                { note: 783.99, duration: 0.6 }, // G5
-                { note: 880.00, duration: 0.4 }, // A5
-                { note: 783.99, duration: 0.4 }, // G5
-                { note: 698.46, duration: 0.8 }, // F5
-                { note: 0, duration: 0.2 },       // rest
-                { note: 783.99, duration: 0.4 }, // G5
-                { note: 659.25, duration: 0.4 }, // E5
-                { note: 698.46, duration: 0.4 }, // F5
-                { note: 659.25, duration: 0.6 }, // E5
-                { note: 587.33, duration: 0.4 }, // D5
-                { note: 523.25, duration: 1.0 }, // C5
-            ];
-
-            let currentNote = 0;
-            
-            function playNote() {
-                if (!soundEnabled) {
-                    stopRayaSong();
-                    return;
-                }
-                
-                const { note, duration } = melody[currentNote];
-                
-                if (note > 0) {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    
-                    osc.type = 'sine';
-                    osc.frequency.value = note;
-                    
-                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-                    
-                    osc.start(audioCtx.currentTime);
-                    osc.stop(audioCtx.currentTime + duration);
-                }
-                
-                currentNote = (currentNote + 1) % melody.length;
-                rayaSongInterval = setTimeout(playNote, duration * 1000);
-            }
-            
-            playNote();
-        }
-        
-        function stopRayaSong() {
-            if (rayaSongInterval) {
-                clearTimeout(rayaSongInterval);
-                rayaSongInterval = null;
-            }
-        }
-
-        document.addEventListener('click', () => {
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            if (soundEnabled && !rayaSongInterval) {
-                playRayaSong();
-            }
-        }, { once: true });
 
         function playBoom() {
             if (!soundEnabled) return;
@@ -477,13 +852,6 @@
                 }, i * 300);
             }
             setTimeout(launchRocket, 1200);
-            
-            // Try to start Raya song (will work after first user interaction)
-            setTimeout(() => {
-                if (audioCtx.state === 'running' && soundEnabled && !rayaSongInterval) {
-                    playRayaSong();
-                }
-            }, 500);
         }, 1000);
 
         // ─── Click to Launch ─────────────────────────────────────────────
