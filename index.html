@@ -108,6 +108,23 @@
         <div style="margin-top:30px; font-size:1.8em; color:#d4af37; animation:fadeInOut 3s ease-in-out infinite; filter:drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));">
             🌙 ⭐ ✨ ⭐ 🌙
         </div>
+        
+        <!-- Duit Raya Button -->
+        <button class="duit-raya-btn" id="duitRayaBtn">
+            <span style="font-size:30px;">💰</span><br>
+            <span style="font-size:0.9em; font-weight:600;">Duit Raya</span>
+        </button>
+    </div>
+    
+    <!-- Duit Raya Amount Popup -->
+    <div id="duitRayaPopup" class="duit-raya-popup">
+        <div class="popup-content">
+            <div class="popup-emoji"><img src="img/pic2.png" alt="Sampul Raya"></div>
+            <div class="popup-title" id="popupTitle">Selamat!</div>
+            <div class="popup-amount" id="popupAmount">RM 0</div>
+            <div class="popup-message" id="popupMessage">Terima wang raya!</div>
+            <button class="popup-close" id="popupClose">Terima Kasih 🙏</button>
+        </div>
     </div>
 
     <script>
@@ -515,6 +532,111 @@
         }
         setInterval(createSparkle, 300);
         for (let i = 0; i < 20; i++) createSparkle();
+
+        // ─── Duit Raya Animation ────────────────────────────────────────
+        const duitRayaBtn = document.getElementById('duitRayaBtn');
+        const duitRayaPopup = document.getElementById('duitRayaPopup');
+        const popupAmount = document.getElementById('popupAmount');
+        const popupTitle = document.getElementById('popupTitle');
+        const popupMessage = document.getElementById('popupMessage');
+        const popupClose = document.getElementById('popupClose');
+        
+        // Check if already claimed (using localStorage)
+        let duitRayaClaimed = localStorage.getItem('duitRayaClaimed') === 'true';
+        let savedAmount = localStorage.getItem('duitRayaAmount');
+        
+        // If already claimed, update button appearance
+        if (duitRayaClaimed) {
+            duitRayaBtn.classList.add('claimed');
+            duitRayaBtn.innerHTML = '<span style="font-size:30px;">✓</span><br><span style="font-size:0.9em; font-weight:600;">Lihat Jumlah</span>';
+        }
+        
+        // Possible amounts
+        const amounts = [0, 1, 5, 10, 20, 30];
+        
+        function createFallingMoney() {
+            const money = document.createElement('div');
+            money.className = 'falling-money';
+            
+            // Random money emoji
+            const moneyEmojis = ['💵', '💴', '💶', '💷', '💰', '🧧'];
+            money.textContent = moneyEmojis[Math.floor(Math.random() * moneyEmojis.length)];
+            
+            // Random horizontal position
+            money.style.left = Math.random() * 100 + '%';
+            
+            // Random animation duration (2-4 seconds)
+            money.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            
+            // Random delay
+            money.style.animationDelay = Math.random() * 0.5 + 's';
+            
+            // Random rotation
+            money.style.setProperty('--rotation', Math.random() * 360 + 'deg');
+            
+            document.body.appendChild(money);
+            
+            // Remove after animation
+            setTimeout(() => money.remove(), 5000);
+        }
+        
+        duitRayaBtn.addEventListener('click', () => {
+            // If already claimed, show saved amount
+            if (duitRayaClaimed) {
+                popupTitle.textContent = 'Anda Sudah Terima';
+                popupMessage.textContent = 'Jumlah yang anda terima sebelum ini:';
+                popupAmount.textContent = 'RM ' + savedAmount;
+                duitRayaPopup.classList.add('show');
+                return;
+            }
+            
+            // Reset popup text for first time
+            popupTitle.textContent = 'Selamat!';
+            popupMessage.textContent = 'Terima wang raya!';
+            
+            // Mark as claimed
+            duitRayaClaimed = true;
+            localStorage.setItem('duitRayaClaimed', 'true');
+            
+            // Get random amount
+            const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
+            savedAmount = randomAmount;
+            localStorage.setItem('duitRayaAmount', randomAmount);
+            
+            popupAmount.textContent = 'RM ' + randomAmount;
+            
+            // Show popup
+            duitRayaPopup.classList.add('show');
+            
+            // Create burst of falling money
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => createFallingMoney(), i * 100);
+            }
+            
+            // Button animation
+            duitRayaBtn.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                duitRayaBtn.style.transform = 'scale(1)';
+            }, 100);
+            
+            // Update button appearance
+            setTimeout(() => {
+                duitRayaBtn.classList.add('claimed');
+                duitRayaBtn.innerHTML = '<span style="font-size:30px;">✓</span><br><span style="font-size:0.9em; font-weight:600;">Lihat Jumlah</span>';
+            }, 1000);
+        });
+        
+        // Close popup
+        popupClose.addEventListener('click', () => {
+            duitRayaPopup.classList.remove('show');
+        });
+        
+        // Close popup when clicking outside
+        duitRayaPopup.addEventListener('click', (e) => {
+            if (e.target === duitRayaPopup) {
+                duitRayaPopup.classList.remove('show');
+            }
+        });
     </script>
 </body>
 </html>
