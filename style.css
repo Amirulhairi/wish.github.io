@@ -2,6 +2,20 @@
    Hari Raya Aidilfitri Greeting Card Styles
    ============================================ */
 
+:root {
+    --emerald-950: #041a12;
+    --emerald-900: #0a3424;
+    --emerald-800: #0f4d36;
+    --emerald-700: #176346;
+    --gold-500: #d4af37;
+    --gold-300: #f3dd95;
+    --cream-100: #fffaf0;
+    --cream-200: #f7efdd;
+    --text-dark: #294034;
+    --text-soft: #5d675f;
+    --card-shadow: 0 28px 90px rgba(0, 0, 0, 0.45);
+}
+
 /* ─── Base & Reset ─────────────────────── */
 * { 
     margin: 0; 
@@ -19,7 +33,11 @@ html {
 
 body {
     font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
-    background: #000000;
+    background:
+        radial-gradient(circle at top, rgba(212, 175, 55, 0.14), transparent 32%),
+        radial-gradient(circle at 20% 20%, rgba(31, 99, 68, 0.4), transparent 36%),
+        radial-gradient(circle at 80% 10%, rgba(212, 175, 55, 0.16), transparent 22%),
+        linear-gradient(160deg, var(--emerald-950) 0%, #02140d 45%, #000000 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -28,15 +46,40 @@ body {
     position: relative;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    padding: 48px 20px;
+}
+
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+body::before {
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 88%);
+    opacity: 0.25;
+}
+
+body::after {
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.18), transparent 55%);
+    filter: blur(70px);
+    opacity: 0.7;
 }
 
 /* ─── Sparkle Effects ─────────────────────── */
 .sparkle {
     position: absolute;
-    background: rgba(255, 215, 0, 1);
+    background: rgba(243, 221, 149, 0.95);
     border-radius: 50%;
     animation: sparkle 3s infinite;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.75);
+    mix-blend-mode: screen;
 }
 
 @keyframes sparkle {
@@ -47,28 +90,29 @@ body {
 /* ─── Greeting Card Container ─────────────────────── */
 .container {
     text-align: center;
-    padding: 50px;
+    padding: 56px 58px 48px;
     background-image: 
         linear-gradient(135deg, 
-            rgba(255, 255, 255, 0.92) 0%, 
-            rgba(255, 252, 240, 0.90) 50%, 
-            rgba(255, 255, 255, 0.92) 100%),
+            rgba(255, 251, 242, 0.94) 0%, 
+            rgba(250, 244, 230, 0.9) 48%, 
+            rgba(255, 254, 250, 0.94) 100%),
         url('img/pic1.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border-radius: 30px;
+    border-radius: 34px;
     box-shadow: 
-        0 20px 60px rgba(255, 215, 0, 0.4),
-        0 0 100px rgba(255, 215, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    max-width: 900px;
+        var(--card-shadow),
+        0 0 120px rgba(212, 175, 55, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    max-width: 960px;
     width: 90%;
     position: relative;
     z-index: 10000;
     animation: fadeIn 1.5s ease-in, cardFloat 6s ease-in-out infinite;
-    border: 3px solid rgba(212, 175, 55, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.42);
     overflow: hidden;
+    backdrop-filter: blur(12px);
 }
 
 .container::before {
@@ -83,6 +127,108 @@ body {
         transparent 70%);
     animation: rotateGradient 20s linear infinite;
     pointer-events: none;
+}
+
+.container::after {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    border: 1px solid rgba(212, 175, 55, 0.28);
+    border-radius: 24px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+    pointer-events: none;
+}
+
+.card-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--emerald-800);
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.12);
+    position: relative;
+    z-index: 2;
+}
+
+.corner-ornament {
+    position: absolute;
+    font-size: 35px;
+    opacity: 0.46;
+    animation: cornerFloat 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.2));
+}
+
+.corner-top-left {
+    top: 20px;
+    left: 20px;
+}
+
+.corner-top-right {
+    top: 20px;
+    right: 20px;
+    animation-delay: 1s;
+}
+
+.corner-bottom-left {
+    bottom: 20px;
+    left: 20px;
+    animation-delay: 2s;
+}
+
+.corner-bottom-right {
+    bottom: 20px;
+    right: 20px;
+    animation-delay: 3s;
+}
+
+.title-block {
+    position: relative;
+    z-index: 2;
+}
+
+.title-accent {
+    margin-top: -10px;
+}
+
+.divider {
+    position: relative;
+    margin: 28px auto;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.divider::before {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.78), transparent);
+}
+
+.divider::after {
+    content: '';
+    position: absolute;
+    inset: -8px 20%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.32), transparent 70%);
+    filter: blur(8px);
+}
+
+.divider-short {
+    width: 46%;
+    height: 3px;
+}
+
+.divider-wide {
+    width: 60%;
+    height: 2px;
 }
 
 @keyframes cardFloat {
@@ -102,8 +248,8 @@ body {
 
 /* ─── Typography & Text Elements ─────────────────────── */
 .mosque-icon { 
-    font-size: 90px; 
-    margin-bottom: 25px; 
+    font-size: 92px; 
+    margin-bottom: 18px; 
     animation: bounce 2s infinite, iconGlow 3s ease-in-out infinite;
     filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
     position: relative;
@@ -122,18 +268,19 @@ body {
 
 h1 { 
     font-family: 'Playfair Display', serif;
-    background: linear-gradient(135deg, #0a4d2e 0%, #0f6e3c 50%, #1a9850 100%);
+    background: linear-gradient(135deg, #0d422e 0%, #175c41 50%, #1d7d58 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     background-size: 200% 200%;
-    font-size: 3.5em; 
-    margin-bottom: 15px; 
+    font-size: 3.65em; 
+    margin-bottom: 8px; 
     font-weight: 900; 
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     position: relative;
     animation: titleShine 4s ease-in-out infinite, gradientMove 6s ease infinite;
     text-shadow: none;
+    line-height: 0.95;
 }
 
 @keyframes titleShine {
@@ -148,16 +295,16 @@ h1 {
 
 .arabic { 
     font-family: 'Amiri', serif;
-    font-size: 2.8em; 
+    font-size: 2.9em; 
     background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #d4af37 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     background-size: 200% 200%;
-    margin: 30px 0; 
+    margin: 24px 0 10px; 
     font-weight: bold;
     animation: arabicPulse 4s ease-in-out infinite, gradientMove 6s ease infinite;
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     position: relative;
     filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
 }
@@ -169,15 +316,15 @@ h1 {
 
 .greeting { 
     font-family: 'Playfair Display', serif;
-    font-size: 2.2em; 
+    font-size: 2.3em; 
     background: linear-gradient(135deg, #0f6e3c 0%, #d4af37 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin: 40px 0; 
+    margin: 34px 0 22px; 
     line-height: 1.6;
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     animation: greetingFloat 5s ease-in-out infinite;
 }
 
@@ -188,19 +335,29 @@ h1 {
 
 .message { 
     font-family: 'Cormorant Garamond', serif;
-    color: #444; 
-    font-size: 1.35em; 
-    line-height: 2.2; 
+    color: var(--text-dark); 
+    font-size: 1.42em; 
+    line-height: 2.05; 
     margin: 30px 0; 
-    font-style: italic;
+    font-style: normal;
     font-weight: 500;
-    padding: 25px;
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0.03) 100%);
-    border-radius: 15px;
-    border-left: 4px solid rgba(212, 175, 55, 0.4);
-    border-right: 4px solid rgba(212, 175, 55, 0.4);
+    padding: 28px 30px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(212, 175, 55, 0.09) 100%);
+    border-radius: 24px;
+    border: 1px solid rgba(212, 175, 55, 0.22);
     position: relative;
-    box-shadow: inset 0 2px 10px rgba(212, 175, 55, 0.1);
+    box-shadow: inset 0 2px 12px rgba(255, 255, 255, 0.26), 0 18px 40px rgba(15, 78, 55, 0.08);
+}
+
+.message::before {
+    content: '“';
+    position: absolute;
+    top: 12px;
+    left: 18px;
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    line-height: 1;
+    color: rgba(212, 175, 55, 0.42);
 }
 
 .decoration { 
@@ -229,18 +386,18 @@ h1 {
 
 .footer { 
     margin-top: 40px; 
-    padding: 25px;
+    padding: 24px 28px;
     background: linear-gradient(135deg, 
-        rgba(212, 175, 55, 0.12) 0%, 
-        rgba(212, 175, 55, 0.05) 50%,
-        rgba(212, 175, 55, 0.12) 100%);
-    border-radius: 15px;
-    color: #666; 
+        rgba(255, 255, 255, 0.46) 0%, 
+        rgba(212, 175, 55, 0.08) 50%,
+        rgba(255, 255, 255, 0.42) 100%);
+    border-radius: 22px;
+    color: var(--text-soft); 
     font-size: 1.05em;
     font-weight: 600;
     letter-spacing: 0.5px;
-    border-top: 2px solid rgba(212, 175, 55, 0.3);
-    border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    box-shadow: 0 14px 30px rgba(15, 78, 55, 0.08);
 }
 
 .footer strong {
@@ -250,12 +407,28 @@ h1 {
     font-family: 'Playfair Display', serif;
 }
 
+.footer-subtext {
+    color: #7c837d;
+    font-size: 0.95em;
+    margin-top: 8px;
+    display: inline-block;
+}
+
 .stars { 
     color: #d4af37; 
-    font-size: 2.2em; 
-    letter-spacing: 18px;
+    font-size: 2em; 
+    letter-spacing: 14px;
+    margin-bottom: 10px;
     animation: starsSparkle 2s ease-in-out infinite;
     filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+}
+
+.bottom-decoration {
+    margin-top: 30px;
+    font-size: 1.8em;
+    color: var(--gold-500);
+    animation: fadeInOut 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
 }
 
 @keyframes starsSparkle {
@@ -288,14 +461,14 @@ h1 {
     position: fixed;
     top: 20px; 
     right: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
+    background: rgba(255, 250, 240, 0.9);
+    border: 1px solid rgba(212, 175, 55, 0.35);
     border-radius: 50%;
     width: 60px; 
     height: 60px;
     font-size: 30px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.22);
     transition: all 0.3s;
     z-index: 20000;
     -webkit-tap-highlight-color: transparent;
@@ -315,20 +488,42 @@ h1 {
 .duit-raya-btn {
     position: relative;
     margin: 30px auto 0;
-    background: linear-gradient(135deg, #0f6e3c 0%, #1a9850 100%);
-    border: 3px solid rgba(212, 175, 55, 0.4);
-    border-radius: 20px;
-    padding: 20px 40px;
+    background: linear-gradient(135deg, #0e583b 0%, #15744c 55%, #1d8d60 100%);
+    border: 1px solid rgba(255, 238, 189, 0.5);
+    border-radius: 24px;
+    padding: 20px 42px;
     font-family: 'Playfair Display', serif;
     color: white;
     font-size: 1.1em;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(26, 152, 80, 0.5);
+    box-shadow: 0 14px 34px rgba(11, 75, 51, 0.35);
     transition: all 0.3s;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     display: block;
     animation: buttonGlow 3s ease-in-out infinite;
+    overflow: hidden;
+}
+
+.duit-raya-btn::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 55%);
+    pointer-events: none;
+}
+
+.duit-raya-icon {
+    font-size: 30px;
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+.duit-raya-label {
+    font-size: 0.92em;
+    font-weight: 600;
+    letter-spacing: 0.08em;
 }
 
 @keyframes buttonGlow {
@@ -370,7 +565,7 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: radial-gradient(circle at top, rgba(212, 175, 55, 0.18), transparent 28%), rgba(0, 0, 0, 0.82);
     z-index: 60000;
     display: flex;
     justify-content: center;
@@ -386,15 +581,26 @@ h1 {
 }
 
 .popup-content {
-    background: linear-gradient(135deg, #fff 0%, #fffef5 100%);
-    border-radius: 30px;
-    padding: 50px 60px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 250, 239, 0.98) 100%);
+    border-radius: 34px;
+    padding: 46px 56px;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(212, 175, 55, 0.6);
-    border: 3px solid rgba(212, 175, 55, 0.5);
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35), 0 0 60px rgba(212, 175, 55, 0.24);
+    border: 1px solid rgba(212, 175, 55, 0.42);
     animation: popupBounce 0.5s ease-out;
     position: relative;
     max-width: 90%;
+    overflow: hidden;
+}
+
+.popup-content::before {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    border: 1px solid rgba(212, 175, 55, 0.24);
+    border-radius: 24px;
+    pointer-events: none;
 }
 
 @keyframes popupBounce {
@@ -413,16 +619,21 @@ h1 {
 
 .popup-emoji {
     font-size: 80px;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     animation: emojiSpin 2s ease-in-out infinite;
 }
 
 .popup-emoji img {
-    width: 120px;
+    width: 138px;
     height: auto;
     display: block;
     margin: 0 auto;
-    filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.3));
+    padding: 10px;
+    border-radius: 26px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(247, 239, 221, 0.9));
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 18px 40px rgba(212, 175, 55, 0.16);
+    filter: drop-shadow(0 8px 16px rgba(212, 175, 55, 0.22));
 }
 
 @keyframes emojiSpin {
@@ -432,7 +643,7 @@ h1 {
 
 .popup-title {
     font-family: 'Playfair Display', serif;
-    font-size: 2.5em;
+    font-size: 2.6em;
     color: #0f6e3c;
     font-weight: bold;
     margin-bottom: 15px;
@@ -458,16 +669,16 @@ h1 {
 
 .popup-message {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5em;
-    color: #666;
+    font-size: 1.45em;
+    color: #667066;
     margin: 20px 0 30px;
-    font-style: italic;
+    font-style: normal;
 }
 
 .popup-close {
     background: linear-gradient(135deg, #0f6e3c 0%, #1a9850 100%);
     color: white;
-    border: none;
+    border: 1px solid rgba(255, 232, 176, 0.4);
     border-radius: 50px;
     padding: 15px 40px;
     font-family: 'Playfair Display', serif;
@@ -813,6 +1024,16 @@ h1 {
         max-width: 95%;
         border-radius: 20px;
     }
+
+    .card-badge {
+        font-size: 0.8rem;
+        letter-spacing: 0.16em;
+        margin-bottom: 18px;
+    }
+
+    .corner-ornament {
+        font-size: 30px;
+    }
     
     h1 { 
         font-size: 2.5em;
@@ -850,6 +1071,14 @@ h1 {
         font-size: 1.8em;
         letter-spacing: 12px;
     }
+
+    .divider-short {
+        width: 58%;
+    }
+
+    .divider-wide {
+        width: 72%;
+    }
     
     .footer {
         padding: 20px;
@@ -878,9 +1107,14 @@ h1 {
         border-width: 2px;
     }
     
-    /* Hide corner decorations on very small screens */
-    .container > div[style*="position:absolute"] {
+    .corner-ornament {
         font-size: 25px !important;
+    }
+
+    .card-badge {
+        padding: 7px 14px;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
     }
     
     .mosque-icon { 
@@ -930,8 +1164,6 @@ h1 {
         line-height: 1.9;
         padding: 18px 15px;
         margin: 20px 0;
-        border-left-width: 3px;
-        border-right-width: 3px;
     }
     
     .message::before {
@@ -990,15 +1222,13 @@ h1 {
         font-size: 1em;
     }
     
-    /* Adjust dividers */
-    div[style*="height:2px"],
-    div[style*="height:3px"] {
+    .divider-short,
+    .divider-wide {
         width: 70% !important;
         margin: 20px auto !important;
     }
     
-    /* Bottom decoration */
-    .container > div:last-child {
+    .bottom-decoration {
         font-size: 1.4em !important;
         margin-top: 20px !important;
     }
@@ -1057,6 +1287,10 @@ h1 {
 @media (max-width: 360px) {
     .container {
         padding: 20px 15px;
+    }
+
+    .card-badge {
+        font-size: 0.66rem;
     }
     
     h1 { 
@@ -1127,6 +1361,10 @@ h1 {
     .container {
         padding: 20px 30px;
         margin: 20px 0;
+    }
+
+    .card-badge {
+        margin-bottom: 14px;
     }
     
     .mosque-icon {

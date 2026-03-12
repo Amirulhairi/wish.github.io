@@ -59,26 +59,24 @@
     </div>
 
     <div class="container">
-        <!-- Corner decorations -->
-        <div style="position:absolute; top:20px; left:20px; font-size:35px; opacity:0.4; animation:cornerFloat 4s ease-in-out infinite;">🌙</div>
-        <div style="position:absolute; top:20px; right:20px; font-size:35px; opacity:0.4; animation:cornerFloat 4s ease-in-out infinite 1s;">⭐</div>
-        <div style="position:absolute; bottom:20px; left:20px; font-size:35px; opacity:0.4; animation:cornerFloat 4s ease-in-out infinite 2s;">✨</div>
-        <div style="position:absolute; bottom:20px; right:20px; font-size:35px; opacity:0.4; animation:cornerFloat 4s ease-in-out infinite 3s;">🌟</div>
-        
+        <div class="corner-ornament corner-top-left">🌙</div>
+        <div class="corner-ornament corner-top-right">⭐</div>
+        <div class="corner-ornament corner-bottom-left">✨</div>
+        <div class="corner-ornament corner-bottom-right">🌟</div>
+        <div class="card-badge">Salam Aidilfitri</div>
+
         <div class="mosque-icon">🕌</div>
         <div class="stars">✨ ✨ ✨</div>
-        
-        <!-- Divider line -->
-        <div style="width:50%; height:3px; background:linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent); margin:25px auto; border-radius:2px;"></div>
-        
-        <h1>Selamat Hari Raya</h1>
-        <h1 style="margin-top:-10px;">Aidilfitri</h1>
-        
+        <div class="divider divider-short"></div>
+
+        <div class="title-block">
+            <h1>Selamat Hari Raya</h1>
+            <h1 class="title-accent">Aidilfitri</h1>
+        </div>
+
         <div class="arabic">عيد مبارك</div>
-        
-        <!-- Decorative divider -->
-        <div style="width:60%; height:2px; background:linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.6), transparent); margin:30px auto; box-shadow:0 0 10px rgba(212, 175, 55, 0.3);"></div>
-        
+        <div class="divider divider-wide"></div>
+
         <div class="decoration">
             <span class="ketupat">🎋</span>
             <span class="float">🌙</span>
@@ -95,24 +93,20 @@
         </div>
         
         <div class="decoration">✧ ✦ ✧ ✦ ✧</div>
-        
-        <!-- Decorative divider -->
-        <div style="width:60%; height:2px; background:linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.6), transparent); margin:30px auto; box-shadow:0 0 10px rgba(212, 175, 55, 0.3);"></div>
+        <div class="divider divider-wide"></div>
         
         <div class="footer">
             <strong>Taqabbalallahu minna wa minkum</strong><br>
-            <span style="color:#888; font-size:0.95em; margin-top:8px; display:inline-block;">May Allah accept from us and from you</span>
+            <span class="footer-subtext">May Allah accept from us and from you</span>
         </div>
         
-        <!-- Bottom decoration -->
-        <div style="margin-top:30px; font-size:1.8em; color:#d4af37; animation:fadeInOut 3s ease-in-out infinite; filter:drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));">
+        <div class="bottom-decoration">
             🌙 ⭐ ✨ ⭐ 🌙
         </div>
         
-        <!-- Duit Raya Button -->
         <button class="duit-raya-btn" id="duitRayaBtn">
-            <span style="font-size:30px;">💰</span><br>
-            <span style="font-size:0.9em; font-weight:600;">Duit Raya</span>
+            <span class="duit-raya-icon">💰</span><br>
+            <span class="duit-raya-label">Duit Raya</span>
         </button>
     </div>
     
@@ -548,7 +542,7 @@
         // If already claimed, update button appearance
         if (duitRayaClaimed) {
             duitRayaBtn.classList.add('claimed');
-            duitRayaBtn.innerHTML = '<span style="font-size:30px;">✓</span><br><span style="font-size:0.9em; font-weight:600;">Lihat Jumlah</span>';
+            duitRayaBtn.innerHTML = '<span class="duit-raya-icon">✓</span><br><span class="duit-raya-label">view</span>';
         }
         
         // Possible amounts
@@ -622,7 +616,7 @@
             // Update button appearance
             setTimeout(() => {
                 duitRayaBtn.classList.add('claimed');
-                duitRayaBtn.innerHTML = '<span style="font-size:30px;">✓</span><br><span style="font-size:0.9em; font-weight:600;">Lihat Jumlah</span>';
+                duitRayaBtn.innerHTML = '<span class="duit-raya-icon">✓</span><br><span class="duit-raya-label">Lihat Jumlah</span>';
             }, 1000);
         });
         
